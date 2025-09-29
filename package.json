@@ -1,14 +1,16 @@
 {
-  "name": "epoch-vault-fullstack",
+  "name": "contracts",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "contracts",
-    "frontend"
-  ],
   "scripts": {
-    "test": "cd contracts && npm test",
-    "build:contracts": "cd contracts && npm run build",
-    "dev:frontend": "cd frontend && npm run dev",
-    "build:frontend": "cd frontend && npm run build"
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "ethers": "^6.14.0",
+    "hardhat": "^2.19.0",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^4.9.3"
   }
 }
