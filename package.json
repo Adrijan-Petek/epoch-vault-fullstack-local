@@ -1,0 +1,14 @@
+{
+  "name": "epoch-vault-fullstack",
+  "private": true,
+  "workspaces": [
+    "contracts",
+    "frontend"
+  ],
+  "scripts": {
+    "test": "cd contracts && npm test",
+    "build:contracts": "cd contracts && npm run build",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build"
+  }
+}
