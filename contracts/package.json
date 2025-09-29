@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.7",
-    "ethers": "^5.7.2",
+    "ethers": "^6.14.0",
     "hardhat": "^2.17.0",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "@openzeppelin/contracts": "^4.9.3"
