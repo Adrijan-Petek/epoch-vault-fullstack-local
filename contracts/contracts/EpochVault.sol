@@ -16,7 +16,7 @@ contract EpochVault {
     uint256 public currentEpochStart;
     uint256 public epochId;
 
-    mapping(uint256 => uint256) public snapshotBalances;
+    mapping(uint256 => uint256) public stakeBalances;
     mapping(uint256 => address) public receiptOwner;
 
     event Deposited(address indexed user, uint256 amount, uint256 receiptId);
@@ -42,7 +42,7 @@ contract EpochVault {
         stakingToken.transferFrom(msg.sender, address(this), amount);
         uint256 rid = receipt.mint(msg.sender);
         receiptOwner[rid] = msg.sender;
-        snapshotBalances[rid] = snapshotBalances[rid].add(amount);
+        stakeBalances[rid] = stakeBalances[rid].add(amount);
         emit Deposited(msg.sender, amount, rid);
         return rid;
     }
@@ -58,11 +58,11 @@ contract EpochVault {
         uint256 total = 0;
         uint256 count = receipt.totalSupply();
         for (uint256 i = 1; i <= count; i++) {
-            total = total.add(snapshotBalances[i]);
+            total = total.add(stakeBalances[i]);
         }
         require(total > 0, "no stakes");
         for (uint256 i = 1; i <= count; i++) {
-            uint256 bal = snapshotBalances[i];
+            uint256 bal = stakeBalances[i];
             if (bal == 0) continue;
             address to = receipt.ownerOf(i);
             uint256 share = rewardAmount.mul(bal).div(total);

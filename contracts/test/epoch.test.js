@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { ethers } = require('hardhat');
+const { ethers, network } = require('hardhat');
 
 describe('EpochVault basic flow', function () {
   it('deposit and distribute', async function () {
@@ -16,6 +16,8 @@ describe('EpochVault basic flow', function () {
     const vault = await EpochVault.deploy(token.address, receipt.address, 3600);
     await vault.deployed();
 
+    await receipt.transferOwnership(vault.address);
+
     await token.faucet(user1.address, ethers.utils.parseEther('1000'));
     await token.faucet(user2.address, ethers.utils.parseEther('1000'));
 
@@ -27,12 +29,16 @@ describe('EpochVault basic flow', function () {
 
     await token.transfer(vault.address, ethers.utils.parseEther('200'));
 
+    // Fast forward time to end epoch
+    await network.provider.send("evm_increaseTime", [3601]);
+    await network.provider.send("evm_mine");
+
     await vault.distributeEpochRewards(ethers.utils.parseEther('200'));
 
     const bal1 = await token.balanceOf(user1.address);
     const bal2 = await token.balanceOf(user2.address);
 
-    expect(bal1).to.equal(ethers.utils.parseEther('950'));
-    expect(bal2).to.equal(ethers.utils.parseEther('850'));
+    expect(bal1.eq(ethers.utils.parseEther('950'))).to.be.true;
+    expect(bal2.eq(ethers.utils.parseEther('850'))).to.be.true;
   });
 });
