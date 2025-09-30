@@ -19,9 +19,9 @@ contract SoulboundReceipt is ERC721Enumerable, Ownable {
         return id;
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override {
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal override {
         // Prevent transfers after mint (soulbound)
         require(from == address(0), "SBT: non-transferable");
-        super._beforeTokenTransfer(from, to, tokenId);
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 }
